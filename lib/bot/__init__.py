@@ -2,6 +2,7 @@ from discord.ext.commands import Bot as BotBase
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from discord import Embed, File
 from datetime import datetime
+from discord.ext.commands import CommandNotFound
 import time
 
 PREFIX = "+"
@@ -32,6 +33,26 @@ class Bot(BotBase):
     async def on_disconnect(self):
         print("BOT has been DISCONNECTED!")
 
+    async def on_error(self, err, *args, **kwargs):
+        if err == "on_command_error":
+            await args[0].send("Something went wrong!")
+        
+        else:
+            channel = self.get_channel(757016278060761178)
+            await channel.send("Dude your code freaking sucks, and error occured right here!")
+        
+        raise
+
+    async def on_command_error(self, ctx, exc):
+        if isinstance(exc, CommandNotFound):
+            pass
+
+        elif hasattr(exc, "original"):
+            raise exc.original
+            
+        else:
+            raise exc
+
     async def on_ready(self):
         if not self.ready:
             self.ready = True
@@ -59,12 +80,6 @@ class Bot(BotBase):
             await channel.send(embed=embed)
             
             await channel.send(file=File("./data/images/elon.gif"))
-
-            i = 0
-            while True:
-                i += 1
-                await channel.send(i)
-                time.sleep(1)
 
         else:
             print("BOT reconnected!")
