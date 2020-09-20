@@ -1,6 +1,7 @@
 from discord.ext.commands import Bot as BotBase
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
-
+from discord import Embed, File
+from datetime import datetime
 
 PREFIX = "+"
 OWNER_IDS = [618038532665114624]
@@ -35,7 +36,29 @@ class Bot(BotBase):
             self.ready = True
             self.guild = self.get_guild(746850984701198437)
             print("BOT is ready!")
-        
+
+            channel = self.get_channel(757016278060761178)
+            await channel.send("Now online!")
+
+            embed = Embed(title="Now online!", url="https://www.github.com/woosal1337",
+                          description="MadeInAZE is now online.", 
+                          colour=0xFF0000,
+                          timestamp=datetime.utcnow())
+            fields = [("Name", "Value", True),
+                      ("Another field", "Next to the first one", True),
+                      ("A non-inline field", "This field will appear on third row.", False)]
+
+            for name, value, inline in fields:
+                embed.add_field(name=name, value=value, inline=inline)
+
+            embed.set_author(name="@woosal1337", icon_url=self.guild.icon_url)
+            embed.set_footer(text="This is a footer xD?")
+            embed.set_thumbnail(url=self.guild.icon_url)
+            embed.set_image(url=self.guild.icon_url)
+            await channel.send(embed=embed)
+            
+            await channel.send(file=File("./data/images/elon.gif"))
+
         else:
             print("BOT reconnected!")
 
