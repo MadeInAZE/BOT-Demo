@@ -2,6 +2,7 @@ from discord.ext.commands import Bot as BotBase
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from discord import Embed, File
 from datetime import datetime
+import time
 
 PREFIX = "+"
 OWNER_IDS = [618038532665114624]
@@ -58,6 +59,12 @@ class Bot(BotBase):
             await channel.send(embed=embed)
             
             await channel.send(file=File("./data/images/elon.gif"))
+
+            i = 0
+            while True:
+                i += 1
+                await channel.send(i)
+                time.sleep(1)
 
         else:
             print("BOT reconnected!")
